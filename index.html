@@ -3,8 +3,44 @@
     <head>
         <title>Calculator</title>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        
+        <div class="calculator">
+            <div id="displayScreen">
+                <div id="input"></div>
+                <div id="output"></div>
+            </div>
+            <div class="buttons">
+                
+                <button id="clear" class="operator" value="clear">AC</button>
+                <button id="delete" class="operator" value="delete">Del</button>
+                <button id="factorial" class="operator" value="factorial">x!</button>
+                <button id="powerOf" class="operator" value="powerOf">x^</button>
+
+                <button id="one" class="digit" value="1">1</button>
+                <button id="two" class="digit" value="2">2</button>
+                <button id="three" class="digit" value="3">3</button>
+                <button id="add" class="operator" value="add">+</button>
+
+                <button id="four" class="digit" value="4">4</button>
+                <button id="five" class="digit" value="5">5</button>
+                <button id="six" class="digit" value="6">6</button>
+                <button id="subtract" class="operator" value="subtract">-</button>
+                
+                <button id="seven" class="digit" value="7">7</button>
+                <button id="eight" class="digit" value="8">8</button>
+                <button id="nine" class="digit" value="9">9</button>
+                <button id="multiply" class="operator" value="multiply">*</button>
+                
+                <button id="zero" class="digit" value="0">0</button>
+                <button id="decimal" class="operator" value="decimal">.</button>
+                <button id="equalsign" class="equals" value="equal">=</button>
+                <button id="divide" class="operator" value="divide">/</button>
+            
+            </div>
+        </div>
+        <footer id="credit">Joshua Haddock © 2021</footer>
     </body>
+    <script src="script.js"></script>
 </html>
