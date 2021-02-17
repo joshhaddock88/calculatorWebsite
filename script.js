@@ -12,19 +12,24 @@ const factorial = number => {
     } return product;
 };
 
+//Used these two arrays in order to loop through and compare/assign value;
+const arithmaticOperators = [add, subtract, multiply, divide, power, factorial]
+const arithmaticInnerText = ["+", "-", "*", "/", "x^", "x!"]
+
 //the vars num1 & num2 will stand in for (a, b) in ^ math functions.
 let num1 = 0;
 let num2 = 0;
 //need to make operator equal to ^ of the above functions when the corresponding button is clicked
-let operator = null;
 let operatorDisplay = null;
+let operator = null;
 let tempNum = '';
 
 const buttons = document.querySelectorAll('button');
 const input = document.getElementById('input');
 const output = document.getElementById('output');
+const clear = document.getElementById('clear')
 //this function will call and execute the arithmatic function.
-const operate = (someOperator, a, b) => someOperator(a, b);
+const operate = (operator, a, b) => operator(a, b);
 
 //loop through all buttons
 buttons.forEach((button) => {
@@ -38,7 +43,12 @@ buttons.forEach((button) => {
         //So if I console log operator it might say "add" as the value, but it won't call the add function. See?
         } else if (button.classList.contains('operator')) {
             operatorDisplay = button.innerText;
-            operator = button.value;
+            for(i = 0; i < arithmaticOperators.length; i++) {
+                if(operatorDisplay === arithmaticInnerText[i]){
+                    operator = arithmaticOperators[i];
+                    break;
+                }
+            }
             input.innerText = `${num1} ${operatorDisplay}`;
         //to solve the problem of the numbers I used a little variable I'm calling tempNum so that I can retain the value of the
         //new number post operator while keeping the input screen looking unchanged.
@@ -50,9 +60,16 @@ buttons.forEach((button) => {
             console.log(operator);
             console.log(num2);
         } else if (button.classList.contains('equals')) {
-        //have to figure out how to make this part work. Right now if I punched in "2 + 3" on my calculator
-        //console log would show (num1 = 2) (operator = add) (num2 = 3) but unfortunately operator = "add" not the const add. See?
-        //So it's unable to execute. Will solce this tomorrow.
+            output.innerText = operate(operator, num1, num2);
         }
     })
+})
+clear.addEventListener('click', () => {
+    num1 = 0;
+    num2 = 0;
+    tempNum = '';
+    operator = null;
+    operatorDisplay = null;
+    input.innerText = '';
+    output.innerText = '';
 })
