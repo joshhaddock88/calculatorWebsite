@@ -23,11 +23,13 @@ let num1 = 0;
 let num2 = 0;
 let operatorDisplay = null;
 let operator = null;
+//tempNum1&2 used to concat strings with +=, so input 5 & 5 = 55, not 10.
 let tempNum1 = '';
 let tempNum2 = '';
 const buttons = document.querySelectorAll('button');
 const input = document.getElementById('input');
 const output = document.getElementById('output');
+//this button is seperate
 const clear = document.getElementById('clear')
 
 
@@ -35,11 +37,20 @@ const clear = document.getElementById('clear')
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         if(button.classList.contains('digit') && operator === null) {
+            //tempNum1 exists to concat the string before turning it into a number so that an input
+            // of 5 & 5 will output 55 instead of 10.
             tempNum1 += button.innerText;
             num1 = Number(tempNum1);
-            input.innerText = `${num1}`
+            input.innerText = `${tempNum1}`
+            output.innerText = '';
         } else if (button.classList.contains('operator')) {
             operatorDisplay = button.innerText;
+            if(num2 !== 0 && num1 !== 0) {
+                output.innerText = operate(operator, num1, num2);
+                num1 = Number(output.innerText);
+                tempNum2 = '';
+                input.innerText = `${num1} ${operatorDisplay}`
+            }
             for(i = 0; i < arithmaticOperators.length; i++) {
                 if(operatorDisplay === arithmaticInnerText[i]){
                     operator = arithmaticOperators[i];
@@ -50,25 +61,22 @@ buttons.forEach((button) => {
             //pressing the = sign. It doesn't work perfectly yet though.
             //This needs to be tweaked.
             input.innerText = `${num1} ${operatorDisplay}`;
-            if(tempNum2 !== '0' && operator !== null) {
-                tempNum1 = num1;
-                output.innerText = operate(operator, num1, num2);
-                num1 = Number(output.innerText);
-                tempNum2 = '0';
-                input.innerText = `${num1} ${operatorDisplay}`
-            }
         //to solve the problem of the numbers I used a little variable I'm calling tempNum2 so that I can retain the value of the
         //new number post operator while keeping the input screen looking unchanged.
         } else if (button.classList.contains('digit') && operator !== null) {
             tempNum2 += button.innerText;
             num2 = Number(tempNum2);
-            input.innerText = `${num1} ${operatorDisplay} ${num2}`
+            input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
+            output.innerText = operate(operator, num1, num2);
+
         } else if (button.classList.contains('equals')) {
-            tempNum1 = num1;
             output.innerText = operate(operator, num1, num2);
             num1 = Number(output.innerText);
-            tempNum2 = '0';
-            input.innerText = `${tempNum1} ${operatorDisplay} ${num2}`
+            input.innerText = `${num1}`
+            operator = null;
+            num2 = 0;
+            tempNum2 = '';
+            tempNum1 = num1.toString();
         }
     })
 })
