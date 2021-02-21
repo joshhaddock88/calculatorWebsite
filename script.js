@@ -1,4 +1,4 @@
-//These are all the math functions for my calculator.
+//Calculator functions
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
@@ -11,74 +11,58 @@ const factorial = number => {
         product *= i;
     } return product;
 };
-//this function will call and execute the arithmatic function.
+//function to execute calculator functions
 const operate = (operator, a, b) => operator(a, b);
 
-//Used these two arrays in order to loop through and compare/assign value;
+//Two arrays of the same index, one for functions, one for that functions symbol as a string
 const arithmaticOperators = [add, subtract, multiply, divide, power, factorial]
 const arithmaticInnerText = ["+", "-", "*", "/", "x^", "x!"]
 
-//the vars num1 & num2 will stand in for (a, b) in ^ math functions.
+//global variables
 let num1 = 0;
 let num2 = 0;
 let operatorDisplay = null;
 let operator = null;
-//tempNum1&2 used to concat strings with +=, so input 5 & 5 = 55, not 10.
 let tempNum1 = '';
 let tempNum2 = '';
 const buttons = document.querySelectorAll('button');
 const input = document.getElementById('input');
 const output = document.getElementById('output');
-//this button is seperate
-const clear = document.getElementById('clear')
+const clear = document.getElementById('clear');
+const equals = document.getElementById('equal');
+const deleteItem = document.getElementById('delete');
 
 
-//adds evenlisteners to all buttons.
+//Loops through and adds function on click to all buttons.
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         if(button.classList.contains('digit') && operator === null) {
-            //tempNum1 exists to concat the string before turning it into a number so that an input
-            // of 5 & 5 will output 55 instead of 10.
-            tempNum1 += button.innerText;
-            num1 = Number(tempNum1);
-            input.innerText = `${tempNum1}`
-            output.innerText = '';
+            assignNum1(button.innerText);
         } else if (button.classList.contains('operator')) {
-            operatorDisplay = button.innerText;
-            if(num2 !== 0 && num1 !== 0) {
-                output.innerText = operate(operator, num1, num2);
-                num1 = Number(output.innerText);
-                tempNum2 = '';
-                input.innerText = `${num1} ${operatorDisplay}`
-            }
-            for(i = 0; i < arithmaticOperators.length; i++) {
-                if(operatorDisplay === arithmaticInnerText[i]){
-                    operator = arithmaticOperators[i];
-                    break;
-                }
-            }
-            //this should make it so that pressing an operator twice is like
-            //pressing the = sign. It doesn't work perfectly yet though.
-            //This needs to be tweaked.
-            input.innerText = `${num1} ${operatorDisplay}`;
-        //to solve the problem of the numbers I used a little variable I'm calling tempNum2 so that I can retain the value of the
-        //new number post operator while keeping the input screen looking unchanged.
+            assignOperator(button.innerText);
         } else if (button.classList.contains('digit') && operator !== null) {
-            tempNum2 += button.innerText;
-            num2 = Number(tempNum2);
-            input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
-            output.innerText = operate(operator, num1, num2);
+            assignNum2(button.innerText);
+        }
+    });
+});
 
-        } else if (button.classList.contains('equals')) {
+equals.addEventListener('click', () => {
+    if(num1 !== 0 && operator !== null && num2 !== 0 || num1 !== 0 && operator === factorial){
+        if(operate(operator, num1, num2).toString().length <= 15) {
             output.innerText = operate(operator, num1, num2);
             num1 = Number(output.innerText);
-            input.innerText = `${num1}`
-            operator = null;
-            num2 = 0;
-            tempNum2 = '';
             tempNum1 = num1.toString();
+        } else {
+            output.innerText = 'ERROR';
+            tempNum1 = '';
         }
-    })
+        input.innerText = `${tempNum1}`
+        operator = null;
+        num2 = 0;
+        tempNum2 = '';
+        //tempNum1 = '';
+        output.innerText = '';
+    }
 })
 
 clear.addEventListener('click', () => {
@@ -90,4 +74,59 @@ clear.addEventListener('click', () => {
     operatorDisplay = null;
     input.innerText = '';
     output.innerText = '';
+})
+
+const assignNum1 = innerText => {
+    tempNum1 += innerText;
+    num1 = Number(tempNum1);
+    input.innerText = `${tempNum1}`
+    output.innerText = '';
+}
+
+const assignOperator = innerText => {
+    operatorDisplay = innerText;
+    if(num2 !== 0 && num1 !== 0) {
+        output.innerText = operate(operator, num1, num2);
+        tempNum1 = output.innerText;
+        tempNum2 = '';
+        num1 = Number(tempNum1);
+        num2 = 0;
+        input.innerText = `${tempNum1} ${operatorDisplay}`
+    }
+    for(i = 0; i < arithmaticOperators.length; i++) {
+        if(operatorDisplay === arithmaticInnerText[i]){
+            operator = arithmaticOperators[i];
+            break;
+        }
+    }
+    input.innerText = `${num1} ${operatorDisplay}`;
+}
+
+const assignNum2 = innerText => {
+    tempNum2 += innerText;
+    num2 = Number(tempNum2);
+    input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
+    output.innerText = operate(operator, num1, num2);
+}
+
+deleteItem.addEventListener('click', () => {
+    if(operator !== null && num2 !== 0) {
+        tempNum2 = tempNum2.slice(0, -1);
+        num2 = Number(tempNum2);
+        input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
+        if(num2 === 0) {
+            output.innerText = ``
+        } else {
+            output.innerText = operate(operator, num1, num2);
+        }
+    }else if(num1 !== 0 && operator !== null) {
+        operator = null;
+        input.innerText = `${num1}`;
+        output.innerText = '';
+    } else if(num1 !== 0) {
+        tempNum1 = tempNum1.slice(0, -1);
+        num1 = Number(tempNum1);
+        input.innerText = `${tempNum1}`;
+        output.innerText = '';
+    }
 })
