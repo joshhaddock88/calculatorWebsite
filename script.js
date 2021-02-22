@@ -1,3 +1,6 @@
+//Make it so "." cannot be pressed more than once.
+//Round decimals to 10 places.
+//Add keyboard functionality.
 //Calculator functions
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
@@ -21,8 +24,12 @@ const arithmaticInnerText = ["+", "-", "*", "/", "x^", "x!"]
 //global variables
 let num1 = 0;
 let num2 = 0;
+//altNums & tempOperator exist so that equal can be pressed twice to repeat the equation.
+let altNum1 = 0;
+let altNum2 = 0;
 let operatorDisplay = null;
 let operator = null;
+let tempOperator = null;
 let tempNum1 = '';
 let tempNum2 = '';
 const buttons = document.querySelectorAll('button');
@@ -48,20 +55,22 @@ buttons.forEach((button) => {
 
 equals.addEventListener('click', () => {
     if(num1 !== 0 && operator !== null && num2 !== 0 || num1 !== 0 && operator === factorial){
-        if(operate(operator, num1, num2).toString().length <= 15) {
-            output.innerText = operate(operator, num1, num2);
-            num1 = Number(output.innerText);
-            tempNum1 = num1.toString();
-        } else {
-            output.innerText = 'ERROR';
-            tempNum1 = '';
-        }
+        tempOperator = operator;
+        altNum1 = num1;
+        altNum2 = num2;
+        num1 = Number(output.innerText);
+        tempNum1 = num1.toString();
         input.innerText = `${tempNum1}`
         operator = null;
         num2 = 0;
         tempNum2 = '';
-        //tempNum1 = '';
+        tempNum1 = '';
         output.innerText = '';
+    }
+    if(num1 !== 0 && operator === null && num2 === 0) {
+        altNum1 = operate(tempOperator, altNum1, altNum2);
+        input.innerText = `${altNum1}`
+        num1 = altNum1;
     }
 })
 
@@ -77,10 +86,19 @@ clear.addEventListener('click', () => {
 })
 
 const assignNum1 = innerText => {
-    tempNum1 += innerText;
-    num1 = Number(tempNum1);
-    input.innerText = `${tempNum1}`
-    output.innerText = '';
+    if(altNum1 !== 0) {
+        tempNum1 = '';
+        altNum1 = 0;
+    }
+    //fix but here so that if the first button pushed is "." it will display "0.":
+    if(innerText === '.' && tempNum1.includes('.')){
+        return input.innerText = `${tempNum1}`
+    } else {
+        tempNum1 += innerText;
+        num1 = Number(tempNum1);
+        input.innerText = `${tempNum1}`
+        output.innerText = '';
+    }
 }
 
 const assignOperator = innerText => {
@@ -124,6 +142,7 @@ deleteItem.addEventListener('click', () => {
         input.innerText = `${num1}`;
         output.innerText = '';
     } else if(num1 !== 0) {
+        tempNum1 = num1.toString();
         tempNum1 = tempNum1.slice(0, -1);
         num1 = Number(tempNum1);
         input.innerText = `${tempNum1}`;
