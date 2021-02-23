@@ -1,6 +1,7 @@
 //Make it so "." cannot be pressed more than once.
 //Round decimals to 10 places.
 //Add keyboard functionality.
+//change altNum to storeNum
 //Calculator functions
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
@@ -24,12 +25,11 @@ const arithmaticInnerText = ["+", "-", "*", "/", "x^", "x!"]
 //global variables
 let num1 = 0;
 let num2 = 0;
-//altNums & tempOperator exist so that equal can be pressed twice to repeat the equation.
-let altNum1 = 0;
-let altNum2 = 0;
 let operatorDisplay = null;
 let operator = null;
-let tempOperator = null;
+let storeNum1 = 0;
+let storeNum2 = 0;
+let storeOperator = null;
 let tempNum1 = '';
 let tempNum2 = '';
 const buttons = document.querySelectorAll('button');
@@ -55,9 +55,9 @@ buttons.forEach((button) => {
 
 equals.addEventListener('click', () => {
     if(num1 !== 0 && operator !== null && num2 !== 0 || num1 !== 0 && operator === factorial){
-        tempOperator = operator;
-        altNum1 = num1;
-        altNum2 = num2;
+        storeOperator = operator;
+        storeNum1 = num1;
+        storeNum2 = num2;
         num1 = Number(output.innerText);
         tempNum1 = num1.toString();
         input.innerText = `${tempNum1}`
@@ -68,9 +68,9 @@ equals.addEventListener('click', () => {
         output.innerText = '';
     }
     if(num1 !== 0 && operator === null && num2 === 0) {
-        altNum1 = operate(tempOperator, altNum1, altNum2);
-        input.innerText = `${altNum1}`
-        num1 = altNum1;
+        storeNum1 = operate(storeOperator, storeNum1, storeNum2);
+        input.innerText = `${storeNum1}`
+        num1 = storeNum1;
     }
 })
 
@@ -86,15 +86,18 @@ clear.addEventListener('click', () => {
 })
 
 const assignNum1 = innerText => {
-    if(altNum1 !== 0) {
+    //in case equal button pushed twice.
+    if(storeNum1 !== 0) {
         tempNum1 = '';
-        altNum1 = 0;
+        storeNum1 = 0;
     }
-    //fix but here so that if the first button pushed is "." it will display "0.":
     if(innerText === '.' && tempNum1.includes('.')){
         return input.innerText = `${tempNum1}`
     } else {
         tempNum1 += innerText;
+        if(tempNum1 === '.') {
+            tempNum1 = '0.';
+        }
         num1 = Number(tempNum1);
         input.innerText = `${tempNum1}`
         output.innerText = '';
@@ -121,15 +124,25 @@ const assignOperator = innerText => {
 }
 
 const assignNum2 = innerText => {
-    tempNum2 += innerText;
-    num2 = Number(tempNum2);
-    input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
-    output.innerText = operate(operator, num1, num2);
+    if(innerText === '.' && tempNum2.includes('.')){
+        return input.innerText = `${num} ${operatorDisplay} ${tempNum2}`
+    } else {
+        tempNum2 += innerText;
+        if(tempNum2 === '.') {
+            tempNum2 = '0.';
+        }
+        num2 = Number(tempNum2);
+        input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
+        output.innerText = operate(operator, num1, num2);
+    }
 }
 
 deleteItem.addEventListener('click', () => {
-    if(operator !== null && num2 !== 0) {
+    if(num2 !== 0 && tempNum2 !== '') {
         tempNum2 = tempNum2.slice(0, -1);
+        if(tempNum2 === '0.') {
+            tempNum2 = '';
+        }
         num2 = Number(tempNum2);
         input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
         if(num2 === 0) {
@@ -137,13 +150,15 @@ deleteItem.addEventListener('click', () => {
         } else {
             output.innerText = operate(operator, num1, num2);
         }
-    }else if(num1 !== 0 && operator !== null) {
+    }else if(operator !== null) {
         operator = null;
         input.innerText = `${num1}`;
         output.innerText = '';
-    } else if(num1 !== 0) {
-        tempNum1 = num1.toString();
+    } else if(num1 !== 0 && tempNum1 !== 0) {
         tempNum1 = tempNum1.slice(0, -1);
+        if(tempNum1 === '0.') {
+            tempNum1 = '0';
+        }
         num1 = Number(tempNum1);
         input.innerText = `${tempNum1}`;
         output.innerText = '';
