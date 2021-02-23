@@ -1,7 +1,5 @@
-//Make it so "." cannot be pressed more than once.
-//Round decimals to 10 places.
+//Fix divide by 0 'DEL' button issue LINE 147
 //Add keyboard functionality.
-//change altNum to storeNum
 //Calculator functions
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
@@ -124,6 +122,7 @@ const assignOperator = innerText => {
 }
 
 const assignNum2 = innerText => {
+    let storeOutput = ''
     if(innerText === '.' && tempNum2.includes('.')){
         return input.innerText = `${num} ${operatorDisplay} ${tempNum2}`
     } else {
@@ -133,14 +132,23 @@ const assignNum2 = innerText => {
         }
         num2 = Number(tempNum2);
         input.innerText = `${num1} ${operatorDisplay} ${tempNum2}`
-        output.innerText = operate(operator, num1, num2);
+        storeOutput = operate(operator, num1, num2);
+        storeOutput = storeOutput.toFixed(10);
+        storeOutput = Number(storeOutput);
+        if(operatorDisplay === '/' && tempNum2 === '0') {
+            output.innerText = 'ERROR'
+        } else {
+            output.innerText = storeOutput;
+        }
     }
 }
 
 deleteItem.addEventListener('click', () => {
+    //when dividing by zero, if I hit 'DEL' it deletes the zero and the division sign. Not sure why.
+    //fix this!
     if(num2 !== 0 && tempNum2 !== '') {
         tempNum2 = tempNum2.slice(0, -1);
-        if(tempNum2 === '0.') {
+        if(tempNum2 === '0.' || tempNum2 === '0') {
             tempNum2 = '';
         }
         num2 = Number(tempNum2);
@@ -148,7 +156,10 @@ deleteItem.addEventListener('click', () => {
         if(num2 === 0) {
             output.innerText = ``
         } else {
-            output.innerText = operate(operator, num1, num2);
+            storeOutput = operate(operator, num1, num2);
+            storeOutput = storeOutput.toFixed(10);
+            storeOutput = Number(storeOutput);
+            output.innerText = storeOutput;
         }
     }else if(operator !== null) {
         operator = null;
