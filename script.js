@@ -146,7 +146,8 @@ const assignNum2 = innerText => {
 deleteItem.addEventListener('click', () => {
     //when dividing by zero, if I hit 'DEL' it deletes the zero and the division sign. Not sure why.
     //fix this!
-    if(num2 !== 0 && tempNum2 !== '') {
+    if(num2 !== 0 || tempNum2 !== '') {
+        console.log(tempNum2);
         tempNum2 = tempNum2.slice(0, -1);
         if(tempNum2 === '0.' || tempNum2 === '0') {
             tempNum2 = '';
@@ -165,7 +166,7 @@ deleteItem.addEventListener('click', () => {
         operator = null;
         input.innerText = `${num1}`;
         output.innerText = '';
-    } else if(num1 !== 0 && tempNum1 !== 0) {
+    } else if(num1 !== 0 && tempNum1 !== '0') {
         tempNum1 = tempNum1.slice(0, -1);
         if(tempNum1 === '0.') {
             tempNum1 = '0';
