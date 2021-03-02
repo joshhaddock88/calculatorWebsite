@@ -9,10 +9,10 @@ html {
     margin-right: auto;
     border-style: solid;
     border-color: black;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 20%;
     height: 50vh;
-    background-color:rgb(109, 135, 143);
+    background-color:rgb(25, 32, 34);
 }
 
 #displayScreen {
@@ -27,12 +27,13 @@ html {
     margin-top: 20px;
     margin-bottom: 20px;
     justify-content: right;
-    background-color: black;
+    background-color: rgb(62, 65, 70);
 }
 
 #input {
     color: rgb(240, 255, 28);
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 #output {
@@ -43,15 +44,18 @@ html {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .digit {
     color:rgb(0, 195, 255);
-    background-color: rgb(27, 34, 36);
+    background-color: rgb(69, 83, 87);
     border-radius: 15px;
     width: 90%;
     height: 5vh;
     margin-top: 5px;
+    outline: none;
 }
 
 .operator {
@@ -61,6 +65,7 @@ html {
     width: 90%;
     height: 5vh;
     margin-top: 5px;
+    outline: none;
 }
 
 .equals {
@@ -70,6 +75,7 @@ html {
     width: 90%;
     height: 5vh;
     margin-top: 5px;
+    outline: none;
 }
 
 .delete {
@@ -79,6 +85,7 @@ html {
     width: 90%;
     height: 5vh;
     margin-top: 5px;
+    outline: none;
 }
 
 .clear {
@@ -88,4 +95,5 @@ html {
     width: 90%;
     height: 5vh;
     margin-top: 5px;
+    outline: none;
 }
