@@ -80,3 +80,12 @@ html {
     height: 5vh;
     margin-top: 5px;
 }
+
+.clear {
+    color: rgb(0, 195, 255);
+    background-color: rgb(29, 55, 63);
+    border-radius: 15px;
+    width: 90%;
+    height: 5vh;
+    margin-top: 5px;
+}
