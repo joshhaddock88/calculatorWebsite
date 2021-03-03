@@ -1,6 +1,8 @@
 html {
     background-color: rgb(0, 195, 255);
     font-family: Arial, Helvetica, sans-serif;
+    margin: auto;
+    text-align: center;
 }
 
 .calculator {
@@ -9,7 +11,8 @@ html {
     margin-right: auto;
     border-style: solid;
     border-color: black;
-    border-radius: 5px;
+    border-radius: 20px;
+    box-shadow: 5px 10px rgba(0, 0, 0, 0.3);
     width: 20%;
     height: 50vh;
     background-color:rgb(25, 32, 34);
@@ -38,6 +41,8 @@ html {
 
 #output {
     color: rgb(0, 255, 255);
+    margin-left: auto;
+    margin-right: 10px;
 }
 
 .buttons {
@@ -48,6 +53,10 @@ html {
     margin-right: auto;
 }
 
+.buttons button:hover {
+    background-color: rgb(97, 133, 143);
+}
+
 .digit {
     color:rgb(0, 195, 255);
     background-color: rgb(69, 83, 87);
@@ -56,6 +65,8 @@ html {
     height: 5vh;
     margin-top: 5px;
     outline: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .operator {
@@ -66,6 +77,8 @@ html {
     height: 5vh;
     margin-top: 5px;
     outline: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .equals {
@@ -76,6 +89,8 @@ html {
     height: 5vh;
     margin-top: 5px;
     outline: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .delete {
@@ -86,6 +101,8 @@ html {
     height: 5vh;
     margin-top: 5px;
     outline: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .clear {
@@ -96,4 +113,11 @@ html {
     height: 5vh;
     margin-top: 5px;
     outline: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#credit {
+    display: block;
+    margin-top: 2%
 }
