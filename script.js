@@ -270,10 +270,6 @@ window.onkeydown = function(e) {
             choice = document.querySelector('#equal');
             choice.click();
             break;
-        case 'Enter':
-            choice = document.querySelector('#equal');
-            choice.click();
-            break;
         case 'Escape':
             choice = document.querySelector('#clear');
             choice.click();

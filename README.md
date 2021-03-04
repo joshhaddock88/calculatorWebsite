@@ -1,2 +1,2 @@
 # calculatorWebsite
-This is a website which works as a basic calculator. It functions visually and will respond to clicks, or is also keyboard sensitive
+This is a website which works as a basic calculator. It functions through a graphical user interface and has keyboard functionality. This project taught me a lot about debugging, juggling multiple lines of logic at once, and intuitive design.
